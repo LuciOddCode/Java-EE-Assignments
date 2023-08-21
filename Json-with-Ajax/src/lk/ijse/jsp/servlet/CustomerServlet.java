@@ -52,6 +52,8 @@ public class CustomerServlet extends HttpServlet {
         String cusName = req.getParameter("cusName");
         String cusAddress = req.getParameter("cusAddress");
 
+
+        System.out.println(cusID+cusName+cusAddress);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/web_pos", "root", "1234");
@@ -89,12 +91,15 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Content-Type","application/json");
         String cusID = req.getParameter("cusID");
         String cusName = req.getParameter("cusName");
         String cusAddress = req.getParameter("cusAddress");
+        System.out.println(cusID+cusName+cusAddress);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/web_pos", "root", "1234");
+
             PreparedStatement pstm3 = connection.prepareStatement("update customer set cus_name=?,cus_address=? where cus_id=?");
             pstm3.setObject(3, cusID);
             pstm3.setObject(1, cusName);
@@ -126,13 +131,20 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
        String cusID= req.getParameter("cusID");
+        resp.addHeader("Content-Type","application/json");
+        System.out.println(cusID);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/web_pos", "root", "1234");
+
             PreparedStatement pstm2 = connection.prepareStatement("delete from customer where cus_id=?");
+
             pstm2.setObject(1, cusID);
             if (pstm2.executeUpdate() > 0) {
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("message","Customer Delete");
                 resp.getWriter().println("Customer Deleted..!");
+                resp.getWriter().print(response.build());
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

@@ -138,11 +138,10 @@
     });
 
     $("#btnCusDelete").click(function(){
-        let formData=$("#customerForm").serialize();
+        let formData=$("#txtCustomerID").val();
         $.ajax({
-            url:'customer',
-            method:'delete',
-            data:formData,
+            url:"customer?cusID="+formData,
+            method:'DELETE',
             success:function (resp){
                 console.log(resp);
                 alert(resp.message);
@@ -156,18 +155,17 @@
     });
 
     $("#btnUpdate").click(function (){
-        let formData=$("#customerForm").serialize();
+
         $.ajax({
-            url:'customer',
+            url:'customer?cusID='+$("#txtCustomerID").val()+"&cusName="+$("#txtCustomerName").val()+"&cusAddress="+$("#txtCustomerAddress").val(),
             method:'put',
-            data:formData,
             success:function (resp){
                 console.log(resp);
                 alert(resp.message);
                 getAllCustomers();
             },
             error:function (error){
-                console.log(error.responseJSON);
+               // console.log(error.responseJSON);
                 alert(error.responseJSON.message);
             }
         });
