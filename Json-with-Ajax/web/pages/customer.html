@@ -155,9 +155,22 @@
         });
     });
 
-    $("#btnUpdate").click(function () {
-        let customer = "{\"cusID\":\"" + $("#txtCustomerID").val() + "\",\"cusName\":\"" + $("#txtCustomerName").val()
-            + "\",\"cusAddress\":\"" + $("#txtCustomerAddress").val() + "\"} ";
+    let click = $("#btnUpdate").click(function () {
+     /*   let customer = "{\"cusID\":\"" + $("#txtCustomerID").val() + "\",\"cusName\":\"" + $("#txtCustomerName").val()
+            + "\",\"cusAddress\":\"" + $("#txtCustomerAddress").val() + "\"} ";*/
+        let cusId = $("#txtCustomerID").val();
+        let cusName = $("#txtCustomerName").val();
+        let cusAddress = $("#txtCustomerAddress").val();
+
+        let customer = {
+            cusID: cusId ,
+            cusName: cusName,
+            cusAddress: cusAddress
+        }
+
+        JSON.stringify(customer);
+
+
         $.ajax({
             url: 'customer',
             method: 'put',
